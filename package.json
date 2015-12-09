@@ -8,9 +8,14 @@
     "preinstall": "npm run install-globals",
     "postinstall": "gulp",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "node ./bin/server/index.js"
+    "start": "node ./bin/server/index.js"
   },
-  "author": "Adrian-Tudor Panescu <adrian@panescu.com>",
+  "author": {
+        "name": "Adrian-Tudor Panescu",
+        "email": "adrian@panescu.com",
+        "url": "http://adrian.panescu.com"
+  },
+  "repository": "adrianp/bag",
   "license": "MIT",
   "dependencies": {
     "babel-preset-es2015": "^6.3.13",

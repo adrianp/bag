@@ -2,6 +2,7 @@ Installation:
 ============
 
 ```
+# will ask for root password as we need to install Gulp
 $ npm i
 ```
 
@@ -9,7 +10,7 @@ Running:
 =======
 
 ```
-$ npm run server
+$ npm start
 ```
 
 Development:
