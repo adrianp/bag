@@ -11,9 +11,9 @@
     "start": "node ./bin/index.js"
   },
   "author": {
-        "name": "Adrian-Tudor Panescu",
-        "email": "adrian@panescu.com",
-        "url": "http://adrian.panescu.com"
+    "name": "Adrian-Tudor Panescu",
+    "email": "adrian@panescu.com",
+    "url": "http://adrian.panescu.com"
   },
   "repository": "adrianp/bag",
   "license": "MIT",
@@ -23,6 +23,8 @@
     "express": "^4.13.3",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",
-    "gulp-live-server": "0.0.29"
+    "gulp-browserify": "^0.5.1",
+    "gulp-live-server": "^0.0.29",
+    "whatwg-fetch": "^0.10.1"
   }
 }

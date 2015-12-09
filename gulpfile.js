@@ -1,4 +1,5 @@
 const babel = require('gulp-babel');
+const browserify = require('gulp-browserify');
 const gls = require('gulp-live-server');
 const gulp = require('gulp');
 
@@ -19,7 +20,8 @@ const paths = {
         },
         'src': './src/www/**/*',
         'jsbin': './bin/www/js/',
-        'entry': 'bin/www/**/*'
+        'watch': 'bin/www/**/*',
+        'entry': 'bin/www'
     }
 };
 
@@ -32,6 +34,7 @@ gulp.task('copyWWW', () => {
 gulp.task('babelWWW', () => {
     return gulp.src(paths.www.js.entry)
         .pipe(babel())
+        .pipe(browserify())
         .pipe(gulp.dest(paths.www.jsbin));
 });
 
@@ -55,7 +58,7 @@ gulp.task('www', () => {
     const server = gls(paths.server.entry);
     server.start();
     gulp.watch(paths.www.src, ['babelWWW', 'copyWWW']);
-    gulp.watch(paths.www.entry, (file) => {
+    gulp.watch(paths.www.watch, (file) => {
         server.notify(file);
     });
 });
