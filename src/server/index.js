@@ -1,3 +1,4 @@
+const bodyParser = require('body-parser');
 const express = require('express');
 const path = require('path');
 const request = require('request');
@@ -11,6 +12,32 @@ const start = () => {
     app.set('view engine', 'ejs');
     app.set('views', path.join(__dirname, '/www/html'));
     app.use(express.static(path.join(__dirname, '/www')));
+    app.use(bodyParser.json());
+
+    app.post('/api/get', (req, res) => {
+        const options = {
+            'url': 'https://getpocket.com/v3/get',
+            'method': 'POST',
+            'headers': {
+                'Content-Type': 'application/json; charset=UTF8',
+                'X-Accept': 'application/json'
+            },
+            'body': JSON.stringify({
+                'consumer_key': '48360-6494766ccc3b69770c2747b1',
+                'access_token': req.body.accessToken
+            })
+        };
+
+        request(options, (err, resp) => {
+            if (err) {
+                res.status(500).send(err);
+                return;
+            }
+            res.setHeader('Content-Type', 'application/json');
+            res.send(resp.body);
+        });
+
+    });
 
     app.get('/', (req, res) => {
         res.render('index', {
