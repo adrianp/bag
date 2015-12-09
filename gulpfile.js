@@ -43,21 +43,20 @@ gulp.task('babelServer', () => {
         .pipe(gulp.dest(paths.bin));
 });
 
-gulp.task('server', () => {
+gulp.task('watch', () => {
     const server = gls(paths.server.entry);
     server.start();
+
     gulp.watch(paths.server.src, ['babelServer']);
-    gulp.watch(paths.server.watch, (file) => {
-        server.start();
+
+    gulp.watch(paths.www.src, ['babelWWW', 'copyWWW']);
+
+    gulp.watch(paths.www.watch, (file) => {
         server.notify(file);
     });
-});
 
-gulp.task('www', () => {
-    const server = gls(paths.server.entry);
-    server.start();
-    gulp.watch(paths.www.src, ['babelWWW', 'copyWWW']);
-    gulp.watch(paths.www.watch, (file) => {
+    gulp.watch(paths.server.watch, (file) => {
+        server.start();
         server.notify(file);
     });
 });
