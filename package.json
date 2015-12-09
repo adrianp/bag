@@ -25,6 +25,7 @@
     "gulp-babel": "^6.1.1",
     "gulp-browserify": "^0.5.1",
     "gulp-live-server": "^0.0.29",
+    "request": "^2.67.0",
     "whatwg-fetch": "^0.10.1"
   }
 }
