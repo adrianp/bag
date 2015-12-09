@@ -8,7 +8,15 @@ let requestToken = null;
 const start = () => {
     const app = express();
 
+    app.set('view engine', 'ejs');
+    app.set('views', path.join(__dirname, '/www/html'));
     app.use(express.static(path.join(__dirname, '/www')));
+
+    app.get('/', (req, res) => {
+        res.render('index', {
+            requestToken
+        });
+    });
 
     const server = app.listen(3000, () => {
         const host = server.address().address;

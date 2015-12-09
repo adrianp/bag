@@ -16,19 +16,18 @@ const paths = {
             'entry': './src/www/js/index.js'
         },
         'html': {
-            'entry': './src/www/html/index.html'
+            'entry': './src/www/html/**/*.ejs'
         },
         'src': './src/www/**/*',
         'jsbin': './bin/www/js/',
         'watch': 'bin/www/**/*',
-        'entry': 'bin/www'
+        'entry': 'bin/www/html/'
     }
 };
 
 gulp.task('copyWWW', () => {
     gulp.src(paths.www.html.entry)
         .pipe(gulp.dest(paths.www.entry));
-
 });
 
 gulp.task('babelWWW', () => {
