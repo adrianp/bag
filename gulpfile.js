@@ -13,7 +13,7 @@ const paths = {
     },
     'www': {
         'js': {
-            'entry': './src/www/js/index.js'
+            'entry': './src/www/js/**/*.js'
         },
         'html': {
             'entry': './src/www/html/**/*.ejs'

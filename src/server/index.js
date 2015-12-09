@@ -14,8 +14,43 @@ const start = () => {
 
     app.get('/', (req, res) => {
         res.render('index', {
-            requestToken
+            requestToken,
+            'address': 'http://localhost:3000/return'
         });
+    });
+
+    app.get('/return', (req, res) => {
+        const options = {
+            'url': 'https://getpocket.com/v3/oauth/authorize',
+            'method': 'POST',
+            'headers': {
+                'Content-Type': 'application/json; charset=UTF8',
+                'X-Accept': 'application/json'
+            },
+            'body': JSON.stringify({
+                'consumer_key': '48360-6494766ccc3b69770c2747b1',
+                'code': requestToken
+            })
+        };
+
+        request(options, (err, resp) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            let data = null;
+            try {
+                data = JSON.parse(resp.body);
+            } catch (e) {
+                console.log(e);
+                return;
+            }
+            res.render('ui', {
+                'token': data.access_token,
+                'username': data.username
+            });
+        });
+
     });
 
     const server = app.listen(3000, () => {
