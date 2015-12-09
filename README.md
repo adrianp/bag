@@ -13,11 +13,13 @@ Running:
 $ npm start
 ```
 
+Now you can navigate to http://localhost:3000/ to start using Bag. Please use
+a fetch API compliant browser: http://caniuse.com/#search=fetch
+
 Development:
 ============
 
 ```
 $ gulp  # initial build
-$ gulp server  # server live reload
-$ gulp www  # client live reload
+$ gulp watch  # live reload
 ```
