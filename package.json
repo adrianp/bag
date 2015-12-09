@@ -8,7 +8,7 @@
     "preinstall": "npm run install-globals",
     "postinstall": "gulp",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./bin/server/index.js"
+    "start": "node ./bin/index.js"
   },
   "author": {
         "name": "Adrian-Tudor Panescu",

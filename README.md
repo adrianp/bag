@@ -19,4 +19,5 @@ Development:
 ```
 $ gulp  # initial build
 $ gulp server  # server live reload
+$ gulp www  # client live reload
 ```
