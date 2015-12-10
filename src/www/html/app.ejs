@@ -7,9 +7,13 @@
 
     <body>
       <div id="content"></div>
+
       <script>
           window.bag = {
-              'accessToken': "<%= token %>"
+              'pocket': {
+                  'accessToken': '<%= accessToken %>',
+                  'username': '<%= username %>'
+              }
           }
       </script>
       <script src="js/app.js"></script>

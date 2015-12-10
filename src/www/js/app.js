@@ -1,29 +1,40 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 
+window.addEventListener('load', () => {
 
-const buildDom = () => {
+    const contentElement = document.getElementById('content');
     ReactDOM.render(
-        <h1>Received data from Pocket!</h1>,
-        document.getElementById('content')
+        <h1>Hello {window.bag.pocket.username}! I'm now retrieving your data from Pocket...</h1>,
+        contentElement
     );
-};
 
-window.fetch('api/get', {
-    'method': 'post',
-    'headers': {
-        'Content-Type': 'application/json'
-    },
-    'body': JSON.stringify({
-        'accessToken': window.bag.accessToken
+
+    window.fetch('api/get', {
+        'method': 'POST',
+        'headers': {
+            'Content-Type': 'application/json'
+        },
+        'body': JSON.stringify({
+            'accessToken': window.bag.pocket.accessToken
+        })
     })
-})
-.then((data) => {
-    return data.json();
-})
-.then((data) => {
-    console.log(data);
-    buildDom();
+    .then((data) => {
+        return data.json();
+    })
+    .then((data) => {
+        console.log(data);
+        ReactDOM.render(
+            <h1>OK, I received data from Pocket!</h1>,
+            contentElement
+        );
+    })
+    .catch((err) => {
+        console.log(err);
+        ReactDOM.render(
+            <h1>Well, I could not get your data from Pocket...</h1>,
+            contentElement
+        );
+    });
+});
 
-})
-.catch(console.log.bind(console));

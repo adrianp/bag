@@ -31,14 +31,14 @@ app.post('/api/get', (req, res) => {
 app.get('/', (req, res) => {
     res.render('index', {
         'requestToken': pocket.getRequestToken(),
-        'address': `${url}/app`
+        'redirectURI': `${url}/app`
     });
 });
 
 app.get('/app', (req, res) => {
     pocket.authorize((data) => {
         res.render('app', {
-            'token': data.access_token,
+            'accessToken': data.access_token,
             'username': data.username
         });
     }, (err) => {
