@@ -1,3 +1,14 @@
+const React = require('react');
+const ReactDOM = require('react-dom');
+
+
+const buildDom = () => {
+    ReactDOM.render(
+        <h1>Hello, world!</h1>,
+        document.getElementById('content')
+    );
+};
+
 window.fetch('api/get', {
     'method': 'post',
     'headers': {
@@ -10,5 +21,9 @@ window.fetch('api/get', {
 .then((data) => {
     return data.json();
 })
-.then(console.log.bind(console))
+.then((data) => {
+    console.log(data);
+    buildDom();
+
+})
 .catch(console.log.bind(console));

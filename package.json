@@ -19,6 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
     "body-parser": "^1.14.1",
     "ejs": "^2.3.4",
@@ -27,6 +28,8 @@
     "gulp-babel": "^6.1.1",
     "gulp-browserify": "^0.5.1",
     "gulp-live-server": "^0.0.29",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
     "request": "^2.67.0"
   }
 }
