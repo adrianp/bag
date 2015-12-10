@@ -2,16 +2,18 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-
         <title>Bag</title>
-
     </head>
 
     <body>
+      <div id="content">
+        <h1>Redirecting to Pocket...</h1>
+      </div>
+
       <script>
           window.bag = {
-              'token': "<%= requestToken %>",
-              'address': "<%= address %>"
+              'requestToken': "<%= requestToken %>",
+              'redirectURI': "<%= redirectURI %>"
           }
       </script>
       <script src="js/index.js"></script>

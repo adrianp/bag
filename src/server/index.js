@@ -1,116 +1,58 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const path = require('path');
-const request = require('request');
+
+const config = require('./config.json');
+const pocket = require('./pocket.js');
 
 
-let requestToken = null;
+const errorHandler = (res, err) => {
+    res.status(500).send(err);
+};
+
+const url = `http://${config.address}:${config.port}`;
+
+const app = express();
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, '/www/html'));
+app.use(express.static(path.join(__dirname, '/www')));
+app.use(bodyParser.json());
+
+app.post('/api/get', (req, res) => {
+    pocket.get(req.body.accessToken, (data) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(data));
+    }, (err) => {
+        errorHandler(res, err);
+    });
+});
+
+app.get('/', (req, res) => {
+    res.render('index', {
+        'requestToken': pocket.getRequestToken(),
+        'redirectURI': `${url}/app`
+    });
+});
+
+app.get('/app', (req, res) => {
+    pocket.authorize((data) => {
+        res.render('app', {
+            'accessToken': data.access_token,
+            'username': data.username
+        });
+    }, () => {
+        res.redirect('/');
+    });
+});
 
 const start = () => {
-    const app = express();
-
-    app.set('view engine', 'ejs');
-    app.set('views', path.join(__dirname, '/www/html'));
-    app.use(express.static(path.join(__dirname, '/www')));
-    app.use(bodyParser.json());
-
-    app.post('/api/get', (req, res) => {
-        const options = {
-            'url': 'https://getpocket.com/v3/get',
-            'method': 'POST',
-            'headers': {
-                'Content-Type': 'application/json; charset=UTF8',
-                'X-Accept': 'application/json'
-            },
-            'body': JSON.stringify({
-                'consumer_key': '48360-6494766ccc3b69770c2747b1',
-                'access_token': req.body.accessToken
-            })
-        };
-
-        request(options, (err, resp) => {
-            if (err) {
-                res.status(500).send(err);
-                return;
-            }
-            res.setHeader('Content-Type', 'application/json');
-            res.send(resp.body);
-        });
-
-    });
-
-    app.get('/', (req, res) => {
-        res.render('index', {
-            requestToken,
-            'address': 'http://localhost:3000/return'
-        });
-    });
-
-    app.get('/return', (req, res) => {
-        const options = {
-            'url': 'https://getpocket.com/v3/oauth/authorize',
-            'method': 'POST',
-            'headers': {
-                'Content-Type': 'application/json; charset=UTF8',
-                'X-Accept': 'application/json'
-            },
-            'body': JSON.stringify({
-                'consumer_key': '48360-6494766ccc3b69770c2747b1',
-                'code': requestToken
-            })
-        };
-
-        request(options, (err, resp) => {
-            if (err) {
-                console.log(err);
-                return;
-            }
-            let data = null;
-            try {
-                data = JSON.parse(resp.body);
-            } catch (e) {
-                console.log(e);
-                return;
-            }
-            res.render('ui', {
-                'token': data.access_token,
-                'username': data.username
-            });
-        });
-
-    });
-
-    const server = app.listen(3000, () => {
+    const server = app.listen(config.port, config.address, () => {
         const host = server.address().address;
         const port = server.address().port;
-        console.log('Pocket request token is: %s', requestToken);
-        console.log('Server listening at http://%s:%s', host, port);
+        console.log('[Server] Listening at: http://%s:%s', host, port);
     });
 };
 
-const options = {
-    'url': 'https://getpocket.com/v3/oauth/request',
-    'method': 'POST',
-    'headers': {
-        'Content-Type': 'application/json; charset=UTF8',
-        'X-Accept': 'application/json'
-    },
-    'body': JSON.stringify({
-        'consumer_key': '48360-6494766ccc3b69770c2747b1',
-        'redirect_uri': 'localhost'
-    })
-};
-
-request(options, (err, resp) => {
-    if (err) {
-        console.log(err);
-        return;
-    }
-    try {
-        requestToken = JSON.parse(resp.body).code;
-    } catch (e) {
-        console.log(e);
-        return;
-    }
-    start();
-});
+// init pocket (i.e., get request token) and start the server afterwards
+pocket.init(url, start, console.log.bind(console));

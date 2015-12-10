@@ -2,63 +2,85 @@ const babel = require('gulp-babel');
 const browserify = require('gulp-browserify');
 const gls = require('gulp-live-server');
 const gulp = require('gulp');
+const eslint = require('gulp-eslint');
 
 
 const paths = {
-    'bin': './bin/',
-    'server': {
-        'src': './src/server/**/*.js',
-        'entry': './bin/index.js',
-        'watch': './bin/**/*.js'
-    },
-    'www': {
-        'js': {
-            'entry': './src/www/js/**/*.js'
-        },
-        'html': {
-            'entry': './src/www/html/**/*.ejs'
-        },
-        'src': './src/www/**/*',
-        'jsbin': './bin/www/js/',
-        'watch': 'bin/www/**/*',
-        'entry': 'bin/www/html/'
-    }
+    'serverSrc': './src/server/**/*.js',
+    'wwwJsSrc': './src/www/js/**/*.js'
 };
 
-gulp.task('copyWWW', () => {
-    gulp.src(paths.www.html.entry)
-        .pipe(gulp.dest(paths.www.entry));
+gulp.task('copy', () => {
+    // copy EJS templates from ./src/ to ./bin/, no massaging required
+    gulp.src('./src/www/html/**/*.ejs')
+        .pipe(gulp.dest('bin/www/html/'));
+
+    // copy server configuration file
+    gulp.src('./config.json')
+        .pipe(gulp.dest('bin/'));
+});
+
+gulp.task('lintWWW', () => {
+    return gulp.src(paths.wwwJsSrc)
+                .pipe(eslint())  // check
+                .pipe(eslint.format())  // output
+                .pipe(eslint.failAfterError());  // possibly fail
 });
 
 gulp.task('babelWWW', () => {
-    return gulp.src(paths.www.js.entry)
-        .pipe(babel())
-        .pipe(browserify())
-        .pipe(gulp.dest(paths.www.jsbin));
+    return gulp.src(paths.wwwJsSrc)
+        .pipe(babel())  // ES6 -> ES5
+        .pipe(browserify())  // bundle external dependencies
+        .pipe(gulp.dest('./bin/www/js/'));  // place everything in ./bin/
+});
+
+gulp.task('lintServer', () => {
+    return gulp.src(paths.serverSrc)
+                .pipe(eslint())  // check
+                .pipe(eslint.format())  // output
+                .pipe(eslint.failAfterError());  // possibly fail
 });
 
 gulp.task('babelServer', () => {
-    return gulp.src(paths.server.src)
-        .pipe(babel())
-        .pipe(gulp.dest(paths.bin));
+    return gulp.src(paths.serverSrc)
+        .pipe(babel())  // ES6 -> ES5
+        .pipe(gulp.dest('./bin/'));  // place everything in ./bin/
 });
 
 gulp.task('watch', () => {
-    const server = gls(paths.server.entry);
+    // run the Express.js server
+    const server = gls('./bin/index.js');
     server.start();
 
-    gulp.watch(paths.server.src, ['babelServer']);
+    // if server code changes, re-compile it using Babel
+    gulp.watch(paths.serverSrc, ['lintServer', 'babelServer', 'copy']);
 
-    gulp.watch(paths.www.src, ['babelWWW', 'copyWWW']);
+    // if www code changes, re-compile it using Babel and copy stuff around
+    gulp.watch('./src/www/**/*', ['lintWWW', 'babelWWW', 'copy']);
 
-    gulp.watch(paths.www.watch, (file) => {
+    // when www code changes, notify the browser for live reload
+    gulp.watch('bin/www/**/*', (file) => {
         server.notify(file);
     });
 
-    gulp.watch(paths.server.watch, (file) => {
+    // when server code changes, restart the server and notify the browser for
+    // live reload
+    gulp.watch('./bin/**/*.js', (file) => {
         server.start();
         server.notify(file);
     });
 });
 
-gulp.task('default', ['babelServer', 'babelWWW', 'copyWWW']);
+gulp.task('default', [
+    'lintServer',
+    'babelServer',
+    'lintWWW',
+    'babelWWW',
+    'copy'
+]);
+
+gulp.task('build', [
+    'babelServer',
+    'babelWWW',
+    'copy'
+]);
