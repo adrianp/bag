@@ -41,8 +41,8 @@ app.get('/app', (req, res) => {
             'accessToken': data.access_token,
             'username': data.username
         });
-    }, (err) => {
-        errorHandler(res, err);
+    }, () => {
+        res.redirect('/');
     });
 });
 
