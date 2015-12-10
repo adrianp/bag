@@ -31,13 +31,13 @@ app.post('/api/get', (req, res) => {
 app.get('/', (req, res) => {
     res.render('index', {
         'requestToken': pocket.getRequestToken(),
-        'address': `${url}/return`
+        'address': `${url}/app`
     });
 });
 
-app.get('/return', (req, res) => {
+app.get('/app', (req, res) => {
     pocket.authorize((data) => {
-        res.render('ui', {
+        res.render('app', {
             'token': data.access_token,
             'username': data.username
         });
