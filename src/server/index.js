@@ -2,12 +2,15 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const path = require('path');
 
+const config = require('./config.json');
 const pocket = require('./pocket.js');
 
 
 const errorHandler = (res, err) => {
     res.status(500).send(err);
 };
+
+const url = `http://${config.address}:${config.port}`;
 
 const app = express();
 
@@ -28,7 +31,7 @@ app.post('/api/get', (req, res) => {
 app.get('/', (req, res) => {
     res.render('index', {
         'requestToken': pocket.getRequestToken(),
-        'address': 'http://localhost:3000/return'
+        'address': `${url}/return`
     });
 });
 
@@ -44,7 +47,7 @@ app.get('/return', (req, res) => {
 });
 
 const start = () => {
-    const server = app.listen(3000, () => {
+    const server = app.listen(config.port, config.address, () => {
         const host = server.address().address;
         const port = server.address().port;
         console.log('[Server] Listening at: http://%s:%s', host, port);
@@ -52,4 +55,4 @@ const start = () => {
 };
 
 // init pocket (i.e., get request token) and start the server afterwards
-pocket.init('http://localhost/', start, console.log.bind(console));
+pocket.init(url, start, console.log.bind(console));

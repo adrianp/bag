@@ -1,13 +1,21 @@
 Huh?
 ====
 
-Bag is a [Pocket](https://getpocket.com) client written is JavaScript
+Bag is a [Pocket](https://getpocket.com) client written in JavaScript
 (ECMAScript 2015 on both server and client-side). It aims to be simple to use,
 fast and feature-rich.
 
 
 Installation:
 =============
+
+```
+$ npm run config
+```
+
+Please edit the `config.json` file to include your own details; the most
+important one is the Pocket consumer key, which you can get
+[here](https://getpocket.com/developer/).
 
 ```
 $ npm install --production
@@ -24,7 +32,7 @@ Running:
 $ npm start
 ```
 
-Now you can navigate to [localhost:3000](http://localhost:3000/) to start using
+Now you can navigate to [127.0.0.1:3000](http://127.0.0.1:3000/) and start using
 Bag. Please use a [fetch API](https://fetch.spec.whatwg.org/)
 [compliant browser](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API#Browser_compatibility).
 

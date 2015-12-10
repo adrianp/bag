@@ -1,5 +1,7 @@
 const fetch = require('node-fetch');
 
+const config = require('./config.json');
+
 
 const apiURL = 'https://getpocket.com/v3/';
 let requestToken = null;
@@ -12,7 +14,7 @@ const getDefaultOptions = () => {
             'X-Accept': 'application/json'
         },
         'body': {
-            'consumer_key': '48360-6494766ccc3b69770c2747b1'
+            'consumer_key': config.pocketConsumerKey
         }
     };
 };

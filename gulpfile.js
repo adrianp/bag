@@ -10,10 +10,14 @@ const paths = {
     'wwwJsSrc': './src/www/js/**/*.js'
 };
 
-gulp.task('copyWWW', () => {
+gulp.task('copy', () => {
     // copy EJS templates from ./src/ to ./bin/, no massaging required
     gulp.src('./src/www/html/**/*.ejs')
         .pipe(gulp.dest('bin/www/html/'));
+
+    // copy server configuration file
+    gulp.src('./config.json')
+        .pipe(gulp.dest('bin/'));
 });
 
 gulp.task('lintWWW', () => {
@@ -49,10 +53,10 @@ gulp.task('watch', () => {
     server.start();
 
     // if server code changes, re-compile it using Babel
-    gulp.watch(paths.serverSrc, ['lintServer', 'babelServer']);
+    gulp.watch(paths.serverSrc, ['lintServer', 'babelServer', 'copy']);
 
     // if www code changes, re-compile it using Babel and copy stuff around
-    gulp.watch('./src/www/**/*', ['lintWWW', 'babelWWW', 'copyWWW']);
+    gulp.watch('./src/www/**/*', ['lintWWW', 'babelWWW', 'copy']);
 
     // when www code changes, notify the browser for live reload
     gulp.watch('bin/www/**/*', (file) => {
@@ -72,11 +76,11 @@ gulp.task('default', [
     'babelServer',
     'lintWWW',
     'babelWWW',
-    'copyWWW'
+    'copy'
 ]);
 
 gulp.task('build', [
     'babelServer',
     'babelWWW',
-    'copyWWW'
+    'copy'
 ]);

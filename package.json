@@ -5,6 +5,7 @@
   "main": "./bin/server/index.js",
   "scripts": {
     "install-globals": "sudo npm i -g gulp",
+    "config": "cp ./config.json.example ./config.json",
     "preinstall": "npm run install-globals",
     "postinstall": "gulp build",
     "test": "echo \"Error: no test specified\" && exit 1",

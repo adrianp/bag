@@ -4,7 +4,7 @@ const ReactDOM = require('react-dom');
 
 const buildDom = () => {
     ReactDOM.render(
-        <h1>Received data from Pocket...</h1>,
+        <h1>Received data from Pocket!</h1>,
         document.getElementById('content')
     );
 };
