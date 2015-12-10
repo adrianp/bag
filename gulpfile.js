@@ -2,10 +2,12 @@ const babel = require('gulp-babel');
 const browserify = require('gulp-browserify');
 const gls = require('gulp-live-server');
 const gulp = require('gulp');
+const eslint = require('gulp-eslint');
 
 
 const paths = {
-    'serverSrc': './src/server/**/*.js'
+    'serverSrc': './src/server/**/*.js',
+    'wwwJsSrc': './src/www/js/**/*.js'
 };
 
 gulp.task('copyWWW', () => {
@@ -14,11 +16,25 @@ gulp.task('copyWWW', () => {
         .pipe(gulp.dest('bin/www/html/'));
 });
 
+gulp.task('lintWWW', () => {
+    return gulp.src(paths.wwwJsSrc)
+                .pipe(eslint())  // check
+                .pipe(eslint.format())  // output
+                .pipe(eslint.failAfterError());  // possibly fail
+});
+
 gulp.task('babelWWW', () => {
-    return gulp.src('./src/www/js/**/*.js')
+    return gulp.src(paths.wwwJsSrc)
         .pipe(babel())  // ES6 -> ES5
         .pipe(browserify())  // bundle external dependencies
         .pipe(gulp.dest('./bin/www/js/'));  // place everything in ./bin/
+});
+
+gulp.task('lintServer', () => {
+    return gulp.src(paths.serverSrc)
+                .pipe(eslint())  // check
+                .pipe(eslint.format())  // output
+                .pipe(eslint.failAfterError());  // possibly fail
 });
 
 gulp.task('babelServer', () => {
@@ -33,10 +49,10 @@ gulp.task('watch', () => {
     server.start();
 
     // if server code changes, re-compile it using Babel
-    gulp.watch(paths.serverSrc, ['babelServer']);
+    gulp.watch(paths.serverSrc, ['lintServer', 'babelServer']);
 
     // if www code changes, re-compile it using Babel and copy stuff around
-    gulp.watch('./src/www/**/*', ['babelWWW', 'copyWWW']);
+    gulp.watch('./src/www/**/*', ['lintWWW', 'babelWWW', 'copyWWW']);
 
     // when www code changes, notify the browser for live reload
     gulp.watch('bin/www/**/*', (file) => {
@@ -51,4 +67,16 @@ gulp.task('watch', () => {
     });
 });
 
-gulp.task('default', ['babelServer', 'babelWWW', 'copyWWW']);
+gulp.task('default', [
+    'lintServer',
+    'babelServer',
+    'lintWWW',
+    'babelWWW',
+    'copyWWW'
+]);
+
+gulp.task('build', [
+    'babelServer',
+    'babelWWW',
+    'copyWWW'
+]);

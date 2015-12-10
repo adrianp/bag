@@ -7,10 +7,10 @@ fast and feature-rich.
 
 
 Installation:
-============
+=============
 
 ```
-$ npm install
+$ npm install --production
 ```
 
 This command will ask for the root password as we need to install
@@ -18,7 +18,7 @@ This command will ask for the root password as we need to install
 
 
 Running:
-=======
+========
 
 ```
 $ npm start
@@ -33,7 +33,8 @@ Development:
 ============
 
 ```
-$ gulp  # initial build
+$ npm install # install development dependencies
+$ gulp  # manual build
 $ gulp watch  # live reload
 ```
 

@@ -6,7 +6,7 @@
   "scripts": {
     "install-globals": "sudo npm i -g gulp",
     "preinstall": "npm run install-globals",
-    "postinstall": "gulp",
+    "postinstall": "gulp build",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./bin/index.js"
   },
@@ -27,9 +27,14 @@
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.1",
     "gulp-browserify": "^0.5.1",
-    "gulp-live-server": "^0.0.29",
+    "gulp-eslint": "^1.1.1",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
     "request": "^2.67.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^5.0.0-beta6",
+    "eslint-plugin-react": "^3.11.3",
+    "gulp-live-server": "^0.0.29"
   }
 }
