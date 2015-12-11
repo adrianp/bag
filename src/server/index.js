@@ -4,10 +4,16 @@ const path = require('path');
 
 const config = require('./config.json');
 const pocket = require('./pocket.js');
+const utils = require('./utils.js');
 
 
 const errorHandler = (res, err) => {
     res.status(500).send(err);
+};
+
+const requestLogger = (req, res, next) => {
+    utils.log(`[Server] ${req.method} request: ${req.url}`);
+    next();
 };
 
 const url = `http://${config.address}:${config.port}`;
@@ -18,6 +24,9 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/www/html'));
 app.use(express.static(path.join(__dirname, '/www')));
 app.use(bodyParser.json());
+
+app.post('*', requestLogger);
+app.get('*', requestLogger);
 
 app.post('/api/get', (req, res) => {
     pocket.get(req.body.accessToken, (data) => {
@@ -47,10 +56,8 @@ app.get('/app', (req, res) => {
 });
 
 const start = () => {
-    const server = app.listen(config.port, config.address, () => {
-        const host = server.address().address;
-        const port = server.address().port;
-        console.log('[Server] Listening at: http://%s:%s', host, port);
+    app.listen(config.port, config.address, () => {
+        utils.log(`[Server] Listening at: ${url}`);
     });
 };
 

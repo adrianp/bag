@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 
 const config = require('./config.json');
+const utils = require('./utils.js');
 
 
 const apiURL = 'https://getpocket.com/v3/';
@@ -46,7 +47,12 @@ module.exports.authorize = (cb, err) => {
 
     fetch(apiURL + 'oauth/authorize', options)
     .then((rawData) => rawData.json())
-    .then(cb)
+    .then((data) => {
+        /* eslint-disable max-len */
+        utils.log(`[Pocket] Authorized user ${data.username}: ${data.access_token}`);
+        /* eslint-enable max-len */
+        cb(data);
+    })
     .catch(err);
 };
 
@@ -61,7 +67,7 @@ module.exports.init = (redirectURI, cb, err) => {
     .then((rawData) => rawData.json())
     .then((data) => {
         requestToken = data.code;
-        console.log('[Pocket] Request token received:', requestToken);
+        utils.log(`[Pocket] Request token received ${requestToken}`);
         cb();
     })
     .catch(err);
