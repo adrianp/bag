@@ -5,7 +5,9 @@ window.addEventListener('load', () => {
 
     const contentElement = document.getElementById('content');
     ReactDOM.render(
-        <h1>Hello {window.bag.pocket.username}! I'm now retrieving your data from Pocket...</h1>,
+        <h1>
+            Hello {window.bag.pocket.username}! Getting your data from Pocket...
+        </h1>,
         contentElement
     );
 
