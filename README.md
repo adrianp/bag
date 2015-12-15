@@ -18,11 +18,15 @@ important one is the Pocket consumer key, which you can get
 [here](https://getpocket.com/developer/).
 
 ```
-$ npm install --production
+$ npm run install-globals
 ```
 
 This command will ask for the root password as we need to install
 [Gulp](http://gulpjs.com/).
+
+```
+$ npm install --production
+```
 
 
 Running:
