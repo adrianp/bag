@@ -38,10 +38,13 @@ app.post('/api/get', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.render('index', {
-        'requestToken': pocket.getRequestToken(),
-        'redirectURI': `${url}/app`
-    });
+    res.redirect(307, [
+        'https://getpocket.com/auth/authorize?request_token=',
+        pocket.getRequestToken(),
+        '&redirect_uri=',
+        `${url}/app`,
+        '&mobile=0'
+    ].join(''));
 });
 
 app.get('/app', (req, res) => {

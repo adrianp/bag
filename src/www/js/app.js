@@ -1,8 +1,45 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 
-window.addEventListener('load', () => {
+class Article extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
+    render() {
+        return (
+            <div className="article">
+                <a className="articleURL" href={this.props.url}>
+                    {this.props.title}
+                </a>
+            </div>
+        );
+    }
+}
+
+class ArticleList extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        const articles = this.props.data.map((article) => {
+            return (
+                <Article title={article.given_title}
+                         url={article.given_url}
+                         key={article.item_id} />
+            );
+        });
+
+        return (
+            <div className="articleList">
+                {articles}
+            </div>
+        );
+    }
+}
+
+window.addEventListener('load', () => {
     const contentElement = document.getElementById('content');
     ReactDOM.render(
         <h1>
@@ -10,7 +47,6 @@ window.addEventListener('load', () => {
         </h1>,
         contentElement
     );
-
 
     window.fetch('api/get', {
         'method': 'POST',
@@ -25,11 +61,8 @@ window.addEventListener('load', () => {
         return data.json();
     })
     .then((data) => {
-        console.log(data);
-        ReactDOM.render(
-            <h1>OK, I received data from Pocket!</h1>,
-            contentElement
-        );
+        const articles = Object.keys(data.list).map((key) => data.list[key]);
+        ReactDOM.render(<ArticleList data={articles} />, contentElement);
     })
     .catch((err) => {
         console.log(err);
