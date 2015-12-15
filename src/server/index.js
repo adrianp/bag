@@ -2,7 +2,6 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const path = require('path');
 
-const config = require('./config.json');
 const pocket = require('./pocket.js');
 const utils = require('./utils.js');
 
@@ -16,7 +15,7 @@ const requestLogger = (req, res, next) => {
     next();
 };
 
-const url = `http://${config.address}:${config.port}`;
+const url = `http://${process.env.address}:${process.env.port}`;
 
 const app = express();
 
@@ -59,7 +58,7 @@ app.get('/app', (req, res) => {
 });
 
 const start = () => {
-    app.listen(config.port, config.address, () => {
+    app.listen(process.env.port, process.env.address, () => {
         utils.log(`[Server] Listening at: ${url}`);
     });
 };

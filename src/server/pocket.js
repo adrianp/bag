@@ -1,6 +1,5 @@
 const fetch = require('node-fetch');
 
-const config = require('./config.json');
 const utils = require('./utils.js');
 
 
@@ -15,7 +14,7 @@ const getDefaultOptions = () => {
             'X-Accept': 'application/json'
         },
         'body': {
-            'consumer_key': config.pocketConsumerKey
+            'consumer_key': process.env.pocketConsumerKey
         }
     };
 };
