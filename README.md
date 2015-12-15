@@ -13,16 +13,17 @@ Installation:
 $ npm run config
 ```
 
-Please edit the `config.json` file to include your own details; the most
+Please edit the `env.sh` file to include your own details; the most
 important one is the Pocket consumer key, which you can get
-[here](https://getpocket.com/developer/).
+[here](https://getpocket.com/developer/). Then run:
 
 ```
+$ source ./env.sh
 $ npm run install-globals
 ```
 
-This command will ask for the root password as we need to install
-[Gulp](http://gulpjs.com/).
+This last command will ask for the root password as we need to install
+[Gulp](http://gulpjs.com/). Finally run:
 
 ```
 $ npm install --production
