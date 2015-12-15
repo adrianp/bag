@@ -37,4 +37,4 @@ node_modules
 bin
 
 # Configuration file
-config.json
+env.sh
