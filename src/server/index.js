@@ -58,7 +58,7 @@ app.get('/app', (req, res) => {
 });
 
 const start = () => {
-    app.listen(() => {
+    app.listen(process.env.PORT || 3000, () => {
         utils.log(`[Server] Listening at: ${url}`);
     });
 };
