@@ -15,7 +15,7 @@ const requestLogger = (req, res, next) => {
     next();
 };
 
-const url = `http://${process.env.address}:${process.env.port}`;
+const url = process.env.url;
 
 const app = express();
 
@@ -58,7 +58,7 @@ app.get('/app', (req, res) => {
 });
 
 const start = () => {
-    app.listen(process.env.port, process.env.address, () => {
+    app.listen(() => {
         utils.log(`[Server] Listening at: ${url}`);
     });
 };
