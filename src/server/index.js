@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const express = require('express');
+const moment = require('moment');
 const path = require('path');
 
 const pocket = require('./pocket.js');
@@ -63,7 +64,7 @@ app.get('/app', (req, res) => {
         pocket.authorize((data) => {
             const [token, username] = [data.access_token, data.username];
             const cookieOptions = {
-                'maxAge': 1000 * 60 * 60 * 24 * 365  // a year
+                'maxAge': moment.duration(1, 'years').asMilliseconds()
             };
             res.cookie('pocketAccessToken', token, cookieOptions);
             res.cookie('pocketUser', username, cookieOptions);
