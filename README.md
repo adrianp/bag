@@ -5,6 +5,10 @@ Bag is a [Pocket](https://getpocket.com) client written in JavaScript
 (ECMAScript 2015 on both server and client-side). It aims to be simple to use,
 fast and feature-rich.
 
+A deployed version of Bag can be found at
+[getbag.herokuapp.com](https://getbag.herokuapp.com). Being a free Heroku
+instance, it might be slow, so please bear with us! :-)
+
 
 Installation:
 =============
@@ -13,12 +17,12 @@ Installation:
 $ npm run config
 ```
 
-Please edit the `env.sh` file to include your own details; the most
-important one is the Pocket consumer key, which you can get
-[here](https://getpocket.com/developer/). Then run:
+Please edit the `env.sh` file to include your own details; the most important
+one is the Pocket consumer key, which you can get
+[here](https://getpocket.com/developer/apps/). Then run:
 
 ```
-$ source ./env.sh
+$ source ./env.sh  # you need to run this in every new terminal in which you plan to run the Bag server
 $ npm run install-globals
 ```
 
@@ -37,16 +41,16 @@ Running:
 $ npm start
 ```
 
-Now you can navigate to [127.0.0.1:3000](http://127.0.0.1:3000/) and start using
-Bag. Please use a [fetch API](https://fetch.spec.whatwg.org/)
-[compliant browser](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API#Browser_compatibility).
+Now you can navigate to [127.0.0.1:3000](http://127.0.0.1:3000/) and start
+using Bag. Please use a [fetch API](https://fetch.spec.whatwg.org/) [compliant
+browser](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API#Browser_compatibility).
 
 
 Development:
 ============
 
 ```
-$ npm install # install development dependencies
+$ npm install  # install development dependencies
 $ gulp  # manual build
 $ gulp watch  # live reload
 ```
