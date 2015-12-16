@@ -40,6 +40,15 @@ app.post('/api/get', (req, res) => {
     });
 });
 
+app.post('/api/send', (req, res) => {
+    pocket.send(req.body.accessToken, req.body.actions, (data) => {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(data));
+    }, (err) => {
+        errorHandler(res, err);
+    });
+});
+
 app.get('/', (req, res) => {
     if (req.cookies.pocketAccessToken) {
         res.redirect(307, '/app');

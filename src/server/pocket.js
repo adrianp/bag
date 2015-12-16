@@ -21,7 +21,7 @@ const getDefaultOptions = () => {
 
 module.exports.getRequestToken = () => requestToken;
 
-module.exports.get = (accessToken, parameters, cb, err) => {
+module.exports.get = (accessToken, parameters = {}, cb, err) => {
     const options = getDefaultOptions();
     Object.assign(options.body, parameters);
     /* eslint-disable camelcase */
@@ -30,6 +30,20 @@ module.exports.get = (accessToken, parameters, cb, err) => {
     options.body = JSON.stringify(options.body);
 
     fetch(apiURL + 'get', options)
+    .then((data) => data.json())
+    .then(cb)
+    .catch(err);
+};
+
+module.exports.send = (accessToken, actions = [], ers, cb, err) => {
+    const options = getDefaultOptions();
+    /* eslint-disable camelcase */
+    options.body.access_token = accessToken;
+    /* eslint-enable camelcase */
+    options.body.actions = actions;
+    options.body = JSON.stringify(options.body);
+
+    fetch(apiURL + 'send', options)
     .then((data) => data.json())
     .then(cb)
     .catch(err);
