@@ -1,4 +1,5 @@
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const express = require('express');
 const path = require('path');
 
@@ -21,8 +22,9 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/www/html'));
-app.use(express.static(path.join(__dirname, '/www')));
+app.use(cookieParser());
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, '/www')));
 
 app.post('*', requestLogger);
 app.get('*', requestLogger);
@@ -37,25 +39,40 @@ app.post('/api/get', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.redirect(307, [
-        'https://getpocket.com/auth/authorize?request_token=',
-        pocket.getRequestToken(),
-        '&redirect_uri=',
-        `${url}/app`,
-        '&mobile=0'
-    ].join(''));
+    if (req.cookies.pocketAccessToken) {
+        res.redirect(307, '/app');
+    } else {
+        res.redirect(307, [
+            'https://getpocket.com/auth/authorize?request_token=',
+            pocket.getRequestToken(),
+            '&redirect_uri=',
+            `${url}/app`,
+            '&mobile=0'
+        ].join(''));
+    }
 });
 
 app.get('/app', (req, res) => {
-    pocket.authorize((data) => {
-        res.render('app', {
-            'accessToken': data.access_token,
-            'username': data.username
+    const finish = (accessToken, username) => {
+        res.render('app', {accessToken, username});
+    };
+
+    if (req.cookies.pocketAccessToken) {
+        finish(req.cookies.pocketAccessToken, req.cookies.pocketUser);
+    } else {
+        pocket.authorize((data) => {
+            const [token, username] = [data.access_token, data.username];
+            const cookieOptions = {
+                'maxAge': 1000 * 60 * 60 * 24 * 365  // a year
+            };
+            res.cookie('pocketAccessToken', token, cookieOptions);
+            res.cookie('pocketUser', username, cookieOptions);
+            finish(token, username);
+        }, (err) => {
+            console.log('[Server] Pocket authorize error: ', err);
+            res.redirect(307, '/');
         });
-    }, (err) => {
-        console.log('[Server] Pocket authorize error: ', err);
-        res.redirect(307, '/');
-    });
+    }
 });
 
 const start = () => {
