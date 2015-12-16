@@ -64,8 +64,7 @@ window.addEventListener('load', () => {
         return data.json();
     })
     .then((data) => {
-        const articles = Object.keys(data.list).map((key) => data.list[key]);
-        ReactDOM.render(<ArticleList data={articles} />, contentElement);
+        ReactDOM.render(<ArticleList data={data} />, contentElement);
     })
     .catch((err) => {
         console.log(err);
