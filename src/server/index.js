@@ -52,8 +52,9 @@ app.get('/app', (req, res) => {
             'accessToken': data.access_token,
             'username': data.username
         });
-    }, () => {
-        res.redirect('/');
+    }, (err) => {
+        console.log('[Server] Pocket authorize error: ', err);
+        res.redirect(307, '/');
     });
 });
 
