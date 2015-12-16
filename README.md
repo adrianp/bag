@@ -1,5 +1,5 @@
-Huh?
-====
+Bag - a slim Pocket client for the Web
+======================================
 
 Bag is a [Pocket](https://getpocket.com) client written in JavaScript
 (ECMAScript 2015 on both server and client-side). It aims to be simple to use,
