@@ -43,7 +43,7 @@ window.addEventListener('load', () => {
     const contentElement = document.getElementById('content');
     ReactDOM.render(
         <h1>
-            Hello {window.bag.pocket.username}! Getting your data from Pocket...
+            Hello {window.bag.pocket.username}! Fetching data from Pocket...
         </h1>,
         contentElement
     );
