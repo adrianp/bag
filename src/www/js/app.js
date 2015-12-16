@@ -54,7 +54,10 @@ window.addEventListener('load', () => {
             'Content-Type': 'application/json'
         },
         'body': JSON.stringify({
-            'accessToken': window.bag.pocket.accessToken
+            'accessToken': window.bag.pocket.accessToken,
+            'parameters': {
+                'state': 'unread'
+            }
         })
     })
     .then((data) => {

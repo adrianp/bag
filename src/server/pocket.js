@@ -21,8 +21,9 @@ const getDefaultOptions = () => {
 
 module.exports.getRequestToken = () => requestToken;
 
-module.exports.get = (accessToken, cb, err) => {
+module.exports.get = (accessToken, parameters, cb, err) => {
     const options = getDefaultOptions();
+    Object.assign(options.body, parameters);
     /* eslint-disable camelcase */
     options.body.access_token = accessToken;
     /* eslint-enable camelcase */

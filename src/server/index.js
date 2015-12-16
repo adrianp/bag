@@ -31,7 +31,7 @@ app.post('*', requestLogger);
 app.get('*', requestLogger);
 
 app.post('/api/get', (req, res) => {
-    pocket.get(req.body.accessToken, (data) => {
+    pocket.get(req.body.accessToken, req.body.parameters, (data) => {
         res.setHeader('Content-Type', 'application/json');
         res.send(JSON.stringify(data));
     }, (err) => {
