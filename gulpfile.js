@@ -16,6 +16,10 @@ gulp.task('copy', () => {
     gulp.src('./src/www/html/**/*.ejs')
         .pipe(gulp.dest('bin/www/html/'));
 
+    // copy images
+    gulp.src('./src/www/img/**/*')
+        .pipe(gulp.dest('bin/www/img'));
+
     // copy server configuration file
     gulp.src('./config.json')
         .pipe(gulp.dest('bin/'));
