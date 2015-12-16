@@ -58,8 +58,9 @@ app.get('/app', (req, res) => {
 });
 
 const start = () => {
-    app.listen(process.env.PORT || 3000, () => {
-        utils.log(`[Server] Listening at: ${url}`);
+    const server = app.listen(process.env.PORT || 3000, () => {
+        const address = server.address();
+        utils.log(`[Server] Listening at: ${address.address}:${address.port}`);
     });
 };
 
