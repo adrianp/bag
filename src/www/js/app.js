@@ -26,7 +26,7 @@ class ArticleList extends React.Component {
         const articles = this.props.data.map((article) => {
             return (
                 <Article title={article.given_title}
-                         url={article.given_url}
+                         url={article.resolved_url}
                          key={article.item_id} />
             );
         });
