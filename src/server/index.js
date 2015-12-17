@@ -8,6 +8,10 @@ const pocket = require('./pocket.js');
 const utils = require('./utils.js');
 
 
+if (!process.env.pocketConsumerKey) {
+    throw new Error('Pocket consumer key missing, did you source env.sh?');
+}
+
 const errorHandler = (res, err) => {
     res.status(500).send(err);
 };
