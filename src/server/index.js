@@ -27,9 +27,15 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/www/html'));
-app.use(cookieParser());
+app.use(cookieParser(process.env.secret));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/www')));
+
+const cookieOptions = {
+    'maxAge': moment.duration(1, 'years').asMilliseconds(),
+    'httpOnly': true,
+    'signed': true
+};
 
 app.post('*', requestLogger);
 app.get('*', requestLogger);
@@ -77,9 +83,6 @@ app.get('/app', (req, res) => {
     } else {
         pocket.authorize((data) => {
             const [token, username] = [data.access_token, data.username];
-            const cookieOptions = {
-                'maxAge': moment.duration(1, 'years').asMilliseconds()
-            };
             res.cookie('pocketAccessToken', token, cookieOptions);
             res.cookie('pocketUser', username, cookieOptions);
             finish(token, username);
